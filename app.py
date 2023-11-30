@@ -6,6 +6,11 @@ from tensorflow.keras.models import load_model
 import cv2
 import requests
 
+
+
+port = int(os.environ.get("PORT", 5000))
+
+
 try:
     app = Flask(__name__)
     
@@ -110,7 +115,7 @@ try:
     
     
     if __name__ == '__main__':
-        app.run(debug=True)
+        app.run(host="0.0.0.0", port=port)
 
 
 except Exception as e:
