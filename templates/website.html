@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name=""viewport" content="width=device-width, initial-scale=1.0">
+        <title>Capstone Project</title>
+        <link rel="icon" type="image/png" href="title-icon.png">
+        <link rel="stylesheet" href="static/styles.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Comfortaa&display=swap" rel="stylesheet">
+
+    </head>
+    <body>
+        <div class="upl">
+            <form action="/predict" method="post" enctype="multipart/form-data">
+                <label for="input-file" id="drop-area">
+                    <input type="file" name="image" accept="image/*" id="input-file" hidden>
+            
+                    <div id="img-view">
+                        <img src="icon.png">
+                        <P>Drag and drop or Click here <b r> to upload image</P>
+                        <span>Upload the Areca nut plant images from your device</span>
+                    </div>
+            
+                </label>
+                <input type="submit" value="Upload and Predict">
+            </form>
+ 
+            <div class="results">
+                <h2>Results</h2>
+                <table>
+                    <tr>
+                        <th>Image</th>
+                        <td id="photo">
+                            {% if photo %}
+                                <img src="{{ photo }}" alt="Image">
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Part Of the Plant</th>
+                        <td id="POP">{% if POP %} {{ POP }} {% endif %}</td>
+                    </tr>
+                    <tr>
+                        <th>Disease Identified</th>
+                        <td id="DI">{% if prediction %} {{ prediction }} {% endif %}</td>
+                    </tr>
+                    
+                    <tr>
+                        <th>Measures</th>
+                        <td id="ME">{% if ME %} {{ ME }} {% endif %}</td>
+                    </tr>
+
+                </table>
+            </div>
+            <div class="weather-section">
+                <form id="weatherForm">
+                    <input placeholder="Enter the City Name" id="search" ">
+                    <button id="getLocationButton" type="button" onclick="GetWeatherForCity()">Get Weather</button>
+                </form>
+                <div id="output"></div>
+
+                <script>
+                    function displayImage(input) {
+                            var file = input.files[0];
+                            var img = document.getElementById('img-view');
+                            var reader = new FileReader();
+                
+                            reader.onload = function (e) {
+                                img.src = e.target.result;
+                            };
+                
+                            reader.readAsDataURL(file);
+                    }
+                    function GetWeatherForCity() {
+                        var city = document.getElementById("search").value;
+
+                        fetch('/get_weather', {
+                            method: 'POST',
+                            body: new URLSearchParams({ 'city': city }),
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded'
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('API Response:', data);
+                            document.getElementById("output").innerHTML = "Location: " + data.location + ". <br>Temperature: " + data.temperature + "°C. Humidity: " + data.humidity;
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            document.getElementById("output").innerHTML = "Error fetching data.";
+                        });
+                    }
+                </script>
+            <div>
+        </div>
+        
+    </body>
+  
+
+    
+
+</html>
