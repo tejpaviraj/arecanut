@@ -1,10 +1,8 @@
 flask
-pickle4
 gunicorn
-scikit-learn
 opencv-python
 tensorflow
-keras
+Pillow
 numpy
 requests
-pandas
+
