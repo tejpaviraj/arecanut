@@ -3,4 +3,4 @@ numpy
 Pillow
 opencv-python
 requests
-tensorflow
+tensorflow-cpu
