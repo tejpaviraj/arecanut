@@ -1,7 +1,7 @@
 flask
 pickle4
 gunicorn
-scikit-learn==0.23.0
+scikit-learn
 opencv-python
 tensorflow
 keras
